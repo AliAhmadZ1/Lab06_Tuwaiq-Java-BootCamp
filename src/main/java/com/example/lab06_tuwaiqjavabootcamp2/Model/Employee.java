@@ -21,14 +21,14 @@ public class Employee {
         //- Length must be more than 2 characters. 
     @NotNull(message = "Shouldn't be empty")
     @Min(value = 10,message = "must be 2 digit")
-//    @Pattern(regexp = "^[0-9][a-zA-Z]{2}$")
+//   @Pattern(regexp = "^[0-9][a-zA-Z]{2}$")
     private int id;
 
     //▪ Name: 
         //- Cannot be null. 
         //- Length must be more than 4 characters. 
         //- Must contain only characters (no numbers).
-    @NotNull(message = "Shouldn't be empty")
+    @NotEmpty(message = "Shouldn't be empty")
     @Size(min = 4,message = "Length must be more than 4 characters.")
     @Pattern(regexp = "^[A-Za-z]+$",message = "Only letters, number not allowed.")
     private String name;
@@ -57,7 +57,7 @@ public class Employee {
     //▪ Position: 
         //- Cannot be null.
         //- Must be either "supervisor" or "coordinator" only.
-    @NotNull(message = "Shouldn't be empty")
+    @NotEmpty(message = "Shouldn't be empty")
     @Pattern(regexp = "^(supervisor|coordinator)$",message = "Only two position either supervisor or coordinator")
     private String position;
 
@@ -69,7 +69,7 @@ public class Employee {
     //▪ hireDate: 
         //- Cannot be null. 
         //- should be a date in the present or the past.
-    @NotNull(message = "Shouldn't be empty")
+    @NotEmpty(message = "Shouldn't be empty")
     @PastOrPresent
     @JsonFormat(pattern = "yyyy/MM/dd")
     private LocalDate hireDate;
@@ -80,8 +80,6 @@ public class Employee {
     @NotNull(message = "Shouldn't be empty")
     @PositiveOrZero(message = "cannot be negative")
     private int annualLeave;
-
-    
 
     //JSON ------------------------------------------*****------------------------------------------
     //  {
