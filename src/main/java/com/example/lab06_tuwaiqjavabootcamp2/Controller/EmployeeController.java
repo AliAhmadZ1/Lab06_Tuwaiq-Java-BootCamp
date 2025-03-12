@@ -5,21 +5,16 @@ import com.example.lab06_tuwaiqjavabootcamp2.Model.Employee;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.HandlerMapping;
-
 import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/v1/employee")
 public class EmployeeController {
 
-    private final HandlerMapping resourceHandlerMapping;
     ArrayList<Employee> employees = new ArrayList<>();
 
-    public EmployeeController(HandlerMapping resourceHandlerMapping) {
-        this.resourceHandlerMapping = resourceHandlerMapping;
-    }
 
     //1. Get all employees: Retrieves a list of all employees.
     @GetMapping("/get")
@@ -32,7 +27,11 @@ public class EmployeeController {
 
     //2. Add a new employee: Adds a new employee to the system.
     @PostMapping("/add")
-    public ResponseEntity addEmployee(@RequestBody @Valid Employee employee) {
+    public ResponseEntity addEmployee(@RequestBody @Valid Employee employee, Errors errors) {
+        if (errors.hasErrors()){
+            String message = errors.getFieldError().getDefaultMessage();
+            return ResponseEntity.status(400).body(message);
+        }
         for (Employee e : employees) {
             if (e.getId() == employee.getId()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiRespone("the employee is already exist."));
@@ -44,7 +43,11 @@ public class EmployeeController {
 
     //3. Update an employee: Updates an existing employee's information.
     @PutMapping("/update/{id}")
-    public ResponseEntity updateEmployee(@PathVariable int id, @RequestBody @Valid Employee employee) {
+    public ResponseEntity updateEmployee(@PathVariable int id, @RequestBody @Valid Employee employee,Errors errors) {
+        if (errors.hasErrors()){
+            String message = errors.getFieldError().getDefaultMessage();
+            return ResponseEntity.status(400).body(message);
+        }
         for (int index = 0; index < employees.size(); index++) {
             if (employees.get(index).getId() == id) {
                 employees.set(index, employee);
